@@ -63,23 +63,39 @@
             $sql = new Sql();
 
             return $sql->select("SELECT * FROM TB_USUARIOS WHERE TB_USUARIOS.DESLOGIN LIKE :SEARCH ORDER BY DESLOGIN", array(
-                        ":SEARCH" => "%".$login . "%")
+                        ":SEARCH" => "%" . $login . "%")
             );
         }
-        
+
         public function login($login, $password) {
-             $sql = new Sql();
+            $sql = new Sql();
             $result = $sql->select("SELECT * FROM TB_USUARIOS WHERE DESLOGIN = :LOGIN AND DESSENHA = :PASS", array(":LOGIN" => $login, ":PASS" => $password));
 
             if (count($result) > 0) {
-                $row = $result[0];
 
-                $this->setIdusuario($row['idusuario']);
-                $this->setDessenha($row['dessenha']);
-                $this->setDesslogin($row['deslogin']);
-                $this->setDtcadastro(new DateTime($row['dtcadastro']));
+                $this->setData($result[0]);
             } else {
                 throw new Exception("Login ou senha inválido");
+            }
+        }
+
+        public function setData($data) {
+            $this->setIdusuario($data['idusuario']);
+            $this->setDessenha($data['dessenha']);
+            $this->setDesslogin($data['deslogin']);
+            $this->setDtcadastro(new DateTime($data['dtcadastro']));
+        }
+
+        public function insert() {
+            $sql = new Sql();
+
+            $results = $sql->select("CALL sp_usuarios_insert(:LOGIN, :PASS)", array(
+                ":LOGIN" => $this->getDeslogin(),
+                ":PASS" => $this->getDessenha()
+            ));
+            
+            if (count($results) > 0) {
+                $this->setData($results[0]);
             }
         }
 
