@@ -6,20 +6,20 @@
 //    echo json_encode($usuarios);
 //    $lista = Usuario::getList();
 //    echo json_encode($lista);
-
-
 //    $search = Usuario::search("ro");
 //    echo json_encode($search);
-    
 //    $usu = new Usuario();
 //    $usu->login("root", "root");
-    
-    
+//    $usu = new Usuario();
+//    $usu->setDessenha("123");
+//    $usu->setDesslogin("novo_usuario");
+//    $usu->setData(new Date());
+////    $usu->insert();
+//    
+
     $usu = new Usuario();
-    $usu->setDessenha("123");
-    $usu->setDesslogin("novo_usuario");
-    $usu->setData(new Date());
-//    $usu->insert();
-    
+    $usu->loadById(2);
+//    $usu->update("hu3hu3br", "asdfaf");
+//    $usu->delete();
     echo $usu;
     

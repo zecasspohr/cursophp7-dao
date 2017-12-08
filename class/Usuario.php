@@ -93,10 +93,40 @@
                 ":LOGIN" => $this->getDeslogin(),
                 ":PASS" => $this->getDessenha()
             ));
-            
+
             if (count($results) > 0) {
                 $this->setData($results[0]);
             }
+        }
+
+        public function update($login, $pass) {
+
+            if (isset($login)) {
+                $this->setDesslogin($login);
+            }
+            if (isset($pass)) {
+                $this->setDessenha($pass);
+            }
+
+            $sql = new Sql();
+            $sql->query("UPDATE tb_usuarios SET deslogin=:LOGIN, dessenha=:PASS WHERE idusuario=:ID", array(
+                ":LOGIN" => $this->getDeslogin(),
+                ":PASS" => $this->getDessenha(),
+                ":ID" => $this->getIdusuario()
+            ));
+        }
+
+        public function delete() {
+
+            $sql = new Sql();
+            $sql->query("DELETE FROM tb_usuarios WHERE idusuario=:ID", array(
+                ":ID" => $this->getIdusuario()
+            ));
+            
+            $this->setIdusuario(0);
+            $this->setDesslogin('');
+            $this->setDessenha('');
+            $this->setDtcadastro(new DateTime());
         }
 
         function __toString() {
